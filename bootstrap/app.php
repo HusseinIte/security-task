@@ -3,9 +3,12 @@
 use App\Http\Middleware\CheckPermission;
 use App\Http\Middleware\CheckRole;
 use App\Http\Middleware\SecurityMiddleware;
+use App\Jobs\GenerateDailyReport;
+use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use Illuminate\Support\Facades\Schedule as FacadesSchedule;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(

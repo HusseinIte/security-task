@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Enums\TaskStatus;
 use App\Exceptions\CustomException;
 use App\Exceptions\NotFoundException;
+use App\Jobs\GenerateDailyReport;
 use App\Models\Task;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
@@ -367,13 +368,6 @@ class TaskService
 
     public function dailyReportTask(array $filterData)
     {
-        $date = now()->format('Y-m-d');
-        $tasks = Task::filterTask($filterData)->whereDate('created_at', Carbon::today())->get();
-        // generate pdf report
-        $pdf = Pdf::loadView('reports/daily-reports', ['tasks' => $tasks, 'date' => $date]);
-        // save report in folder reports with name depend on filter data in public folder
-        $filter = !empty(array_filter($filterData)) ? implode('_', array_filter($filterData)) : "general";
-        $filePath = 'reports/' . $filter . '/daily-report-' . $date . '.pdf';
-        return Storage::disk('public')->put($filePath, $pdf->output());
+        GenerateDailyReport::dispatch($filterData);
     }
 }

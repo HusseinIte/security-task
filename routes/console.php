@@ -1,5 +1,6 @@
 <?php
 
+use App\Jobs\GenerateDailyReport;
 use App\Models\Task;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
@@ -13,13 +14,4 @@ Artisan::command('inspire', function () {
 })->purpose('Display an inspiring quote')->hourly();
 
 
-
-Schedule::call(function () {
-    $date = now()->format('Y-m-d');
-    $tasks = Task::whereDate('created_at', Carbon::today())->get();
-    // generate pdf report
-    $pdf = Pdf::loadView('reports/daily-reports', ['tasks' => $tasks, 'date' => $date]);
-    // save report in folder reports with name depend on filter data in public folder
-    $filePath = 'reports/daily-report-' . $date . '.pdf';
-    Storage::disk('public')->put($filePath, $pdf->output());
-})->daily();
+Schedule::job(new GenerateDailyReport())->daily();

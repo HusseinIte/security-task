@@ -20,5 +20,8 @@ class DatabaseSeeder extends Seeder
 
         $user = User::findOrFail(1);
         $user->roles()->attach(1);
+
+        $user = User::findOrFail(2);
+        $user->roles()->attach(2);
     }
 }

@@ -41,7 +41,7 @@ class AttachmentService
         $pathTraversalHandler = new PathTraversalValidationHandler();
         $storageHandler = new FileStorageHandler();
 
-        // Build the chain: file extenion -> type -> path traversal -> storage
+        // Build the chain: file extension -> type -> path traversal -> storage
         $fileExtentionHandler
             ->setNext($fileTypeHandler)
             ->setNext($pathTraversalHandler)
